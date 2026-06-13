@@ -1,41 +1,91 @@
-# misoTarThis folder has four files.
+# misoTar
 
-1. misoTar.py is the main code file.
-2. sample_train_df.csv is a sample training dataset.
-3. sample_test_df.csv is a sample test dataset.
-4. requirements.txt has all the library names and versions that are required to run the misoTar.py file.
+misoTar is a deep learning framework for predicting miRNA/isomiR–mRNA interactions.
 
+## Repository Contents
 
-Once the train and test files are properly designated in misoTar, the code will run smoothly.
+This repository contains the following files:
 
-====================================================================================================================================================================================
-Dataset Information:
+| File                  | Description                                        |
+| --------------------- | -------------------------------------------------- |
+| `misoTar.py`          | Main script for training and evaluating the model. |
+| `sample_train_df.csv` | Example training dataset.                          |
+| `sample_test_df.csv`  | Example test dataset.                              |
+| `requirements.txt`    | Required Python libraries and versions.            |
 
-Both the train and test dataset has three columns.
+Once the training and testing datasets are correctly specified in `misoTar.py`, the model can be trained and evaluated directly.
 
-Column name 		Description
+---
 
-1. miRNA/isomiR		miRNA or isomiR sequence.
-2. mRNA			mRNA sequence
-3. label		1 or 0. 1 if they interact; 0 if they don't.
+## Dataset Format
 
-=====================================================================================================================================================================================
-Installation Guide:
+Both training and testing datasets must contain the following three columns:
 
-1. At first, create a new Anaconda virtual environment and activate it:
-	Command: conda create -n misoTar
-	Command: conda activate misoTar
+| Column         | Description                                                             |
+| -------------- | ----------------------------------------------------------------------- |
+| `miRNA/isomiR` | miRNA or isomiR sequence.                                               |
+| `mRNA`         | Target mRNA sequence.                                                   |
+| `label`        | Interaction label (`1` = interacting pair, `0` = non-interacting pair). |
 
-   Optional Steps: If you don't have pip in the new virtual environment, install it via:
-	Command: conda install pip -y
+Example:
 
-2. Then install the necessary libraries:
-	Command: pip install torch torchvision # PyTorch for CPU. Also if you have a GPU, install PyTorch based on your system from here "https://pytorch.org/get-started/locally/"
-	Command: pip install transformers[torch]
-	Command: pip install datasets
-	Command: pip install scikit-learn
-	
-	instead of all of this, you can utilize the requirements.txt file to install all the necessary libraries via
-	Command: pip freeze > requirements.txt
+| miRNA/isomiR           | mRNA     | label |
+| ---------------------- | -------- | ----- |
+| UGAGGUAGUAGGUUGUAUAGUU | AUGCU... | 1     |
+| UGAGGUAGUAGGUUGUAUAGUU | CCGUA... | 0     |
 
-3. Now misoTar.py should run smoothly in any editor with the misoTar virtual environment.
+---
+
+## Installation
+
+### 1. Create and Activate a Conda Environment
+
+```bash
+conda create -n misoTar python=3.11
+conda activate misoTar
+```
+
+If `pip` is not available in the environment:
+
+```bash
+conda install pip -y
+```
+
+### 2. Install Dependencies
+
+The recommended approach is to install all required packages using the provided `requirements.txt` file:
+
+```bash
+pip install -r requirements.txt
+```
+
+Alternatively, the major dependencies can be installed manually:
+
+```bash
+pip install torch torchvision
+pip install transformers[torch]
+pip install datasets
+pip install scikit-learn
+```
+
+> **Note:** For GPU support, install the appropriate PyTorch version for your system following the instructions at https://pytorch.org/get-started/locally/.
+
+---
+
+## Running misoTar
+
+1. Update the training and testing dataset paths in `misoTar.py`.
+2. Activate the `misoTar` environment.
+3. Run the script:
+
+```bash
+python misoTar.py
+```
+
+The model will train and evaluate using the specified datasets.
+
+---
+
+## Requirements
+
+All package versions used in our experiments are listed in `requirements.txt`.
