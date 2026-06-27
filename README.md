@@ -6,12 +6,14 @@ misoTar is a deep learning framework for predicting miRNA/isomiR–mRNA interact
 
 This repository contains the following files:
 
-| File                  | Description                                        |
-| --------------------- | -------------------------------------------------- |
-| `misoTar.py`          | Main script for training and evaluating the model. |
-| `sample_train_df.csv` | Example training dataset.                          |
-| `sample_test_df.csv`  | Example test dataset.                              |
-| `requirements.txt`    | Required Python libraries and versions.            |
+| File | Description |
+|------|-------------|
+| `misoTar.py` | Main script for training and evaluating the misoTar model. |
+| `sample_train_df.csv` | Example training dataset. |
+| `sample_test_df.csv` | Example test dataset. |
+| `requirements.txt` | List of required Python packages and their versions. |
+| `post_process_data_sample.csv` | Example input dataset for transcript region annotation. |
+| `transcript_region_annotate.py` | Post-processing script that maps predicted target sites to reference transcripts and annotates each site as **5′ UTR**, **CDS**, or **3′ UTR** based on the region with the greatest nucleotide overlap. |
 
 Once the training and testing datasets are correctly specified in `misoTar.py`, the model can be trained and evaluated directly.
 
