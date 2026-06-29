@@ -96,37 +96,36 @@ def Smith_Waterman(seq1, seq2):
     score_matrix = np.zeros((m + 1, n + 1))
     tracing_matrix = np.zeros((m + 1, n + 1))
 
-    max_score = 0
-    max_index = (0, 0)
+    for i in range(m + 1):
+        score_matrix[i][0] = i * gap
+    for j in range(n + 1):
+        score_matrix[0][j] = j * gap
+
+    max_score = -1
+    max_index = (-1, -1)
 
     # Fill dynamic programming matrix
     for i in range(1, m + 1):
         for j in range(1, n + 1):
-            pair = seq1[i - 1] + seq2[j - 1]
-            match_value = match_score.get(pair, -1)
-
+            # print(i,j)
+            match_value = match_score[seq1[i - 1] + seq2[j - 1]]
             left_up = score_matrix[i - 1, j - 1] + match_value
             up = score_matrix[i - 1, j] + gap
             left = score_matrix[i, j - 1] + gap
-
             score_matrix[i, j] = max(left_up, left, up, 0)
 
             if score_matrix[i, j] == 0:
-                tracing_matrix[i, j] = position["stop"]
-            elif score_matrix[i, j] == left_up:
-                tracing_matrix[i, j] = position["left_up"]
+                tracing_matrix[i, j] = position['stop']
             elif score_matrix[i, j] == left:
-                tracing_matrix[i, j] = position["left"]
-            else:
-                tracing_matrix[i, j] = position["up"]
-
+                tracing_matrix[i, j] = position['left']
+            elif score_matrix[i, j] == up:
+                tracing_matrix[i, j] = position['up']
+            elif score_matrix[i, j] == left_up:
+                tracing_matrix[i, j] = position['left_up']
             if score_matrix[i, j] > max_score:
                 max_index = (i, j)
                 max_score = score_matrix[i, j]
 
-    # If no positive local alignment exists
-    if max_score == 0:
-        return 0, "No positive local alignment"
 
     align_seq1 = ""
     align_seq2 = ""
@@ -134,22 +133,22 @@ def Smith_Waterman(seq1, seq2):
     max_i, max_j = max_index
 
     # Trace back from the highest-scoring cell to recover local alignment
-    while tracing_matrix[max_i, max_j] != position["stop"]:
-        if tracing_matrix[max_i, max_j] == position["left_up"]:
+    while tracing_matrix[max_i, max_j] != position['stop']:
+        if tracing_matrix[max_i, max_j] == position['up']:
+            align_seq1 = seq1[max_i - 1] + align_seq1
+            align_seq2 = '-' + align_seq2
+            max_i = max_i - 1
+
+        elif tracing_matrix[max_i, max_j] == position['left']:
+            align_seq1 = '-' + align_seq1
+            align_seq2 = seq2[max_j - 1] + align_seq2
+            max_j = max_j - 1
+
+        elif tracing_matrix[max_i, max_j] == position['left_up']:
             align_seq1 = seq1[max_i - 1] + align_seq1
             align_seq2 = seq2[max_j - 1] + align_seq2
-            max_i -= 1
-            max_j -= 1
-
-        elif tracing_matrix[max_i, max_j] == position["left"]:
-            align_seq1 = "-" + align_seq1
-            align_seq2 = seq2[max_j - 1] + align_seq2
-            max_j -= 1
-
-        elif tracing_matrix[max_i, max_j] == position["up"]:
-            align_seq1 = seq1[max_i - 1] + align_seq1
-            align_seq2 = "-" + align_seq2
-            max_i -= 1
+            max_i = max_i - 1
+            max_j = max_j - 1
 
     match_line = ""
 
